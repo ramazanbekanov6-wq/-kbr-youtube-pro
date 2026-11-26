@@ -91,7 +91,7 @@ nav button{margin:0;padding:12px 6px;font-size:13px}
 <div class="card">
 <h2>Добро пожаловать в KBR YouTube PRO!</h2>
 <p>Создавай сценарии, получай идеи, улучшай SEO и отслеживай показатели своего канала.</p>
-<p class="ai-label">● ИИ Mistral — подключение через защищённый сервер</p>
+<p class="ai-label">● ИИ Mistral — Cloudflare Worker</p>
 <button onclick="showTab('analysis')">Анализировать канал</button>
 <button onclick="showTab('ideas')">Создать идеи Shorts</button>
 <button class="secondary" onclick="showTab('seo')">Открыть SEO</button>
@@ -211,9 +211,9 @@ nav button{margin:0;padding:12px 6px;font-size:13px}
 
 <div class="card">
 <h2>Подключение искусственного интеллекта</h2>
-<p class="status">● Mistral AI — серверная интеграция</p>
-<p>Ключ ИИ хранится в защищённых переменных Netlify. Вводить его на сайте не нужно.</p>
-<p><small>Для работы генераторов требуется опубликованная серверная функция Netlify и действующий API-ключ Mistral.</small></p>
+<p class="status">● Mistral AI — Cloudflare Worker</p>
+<p>ИИ подключается через защищённый сервер Cloudflare. API-ключ не требуется вводить на сайте.</p>
+<p><small>Адрес сервера: kbr-youtube-ai.ramazanbekanov34.workers.dev</small></p>
 </div>
 
 <div class="card">
@@ -228,6 +228,8 @@ nav button{margin:0;padding:12px 6px;font-size:13px}
 <footer>KBR YouTube PRO © 2026</footer>
 
 <script>
+const WORKER_URL='https://kbr-youtube-ai.ramazanbekanov34.workers.dev';
+
 const KEY_NAME='kbr_youtube_api_key';
 const CHANNEL_NAME='kbr_youtube_channel';
 const TASK_NAME='kbr_youtube_tasks';
@@ -300,35 +302,36 @@ function cleanTopic(value){
 return value.trim().replace(/\s+/g,' ').replace(/[.!?]+$/,'');
 }
 
-/* ОБЩАЯ ФУНКЦИЯ ПОДКЛЮЧЕНИЯ MISTRAL AI */
+/* ПОДКЛЮЧЕНИЕ CLOUDFLARE WORKER */
 
 async function askAI(action,topic,keyword=''){
-const response=await fetch('/.netlify/functions/ai',{
+const response=await fetch(WORKER_URL,{
 method:'POST',
 headers:{'Content-Type':'application/json'},
 body:JSON.stringify({
 action:action,
 topic:topic,
-keyword:keyword
+direction:keyword
 })
 });
 
 let data;
+
 try{
 data=await response.json();
 }catch(e){
-throw new Error('Сервер вернул неправильный ответ. Проверь публикацию Netlify.');
+throw new Error('Сервер вернул неправильный ответ. Проверь Worker.');
 }
 
-if(!response.ok){
+if(!response.ok||!data.success){
 throw new Error(data.error||'Ошибка ИИ-сервера: '+response.status);
 }
 
-if(!data.result){
+if(!data.text){
 throw new Error('ИИ не вернул результат.');
 }
 
-return data.result;
+return data.text;
 }
 
 /* ГЕНЕРАТОР ИДЕЙ */
@@ -348,10 +351,7 @@ button.disabled=true;
 out.textContent='ИИ Mistral создаёт 10 уникальных идей. Пожалуйста, подожди...';
 
 try{
-const result=await askAI(
-'ideas',
-topic+'. Направление: '+type
-);
+const result=await askAI('ideas',topic+'. Направление: '+type);
 out.textContent=result;
 }catch(error){
 out.textContent='ОШИБКА ПОДКЛЮЧЕНИЯ ИИ:\n'+error.message;
