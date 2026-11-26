@@ -39,6 +39,7 @@ footer{text-align:center;color:#777;padding:25px}
 .status{color:#80df9a}
 .error{color:#ff8585}
 .muted{color:#999}
+.ai-label{color:#80df9a;font-size:13px;margin:8px 0}
 @media(max-width:600px){
 main{padding:12px}
 h1{font-size:22px}
@@ -49,6 +50,7 @@ nav button{margin:0;padding:12px 6px;font-size:13px}
 </style>
 </head>
 <body>
+
 <header>
 <div class="logo">▶ KBR YouTube PRO</div>
 <span>Панель управления</span>
@@ -56,7 +58,7 @@ nav button{margin:0;padding:12px 6px;font-size:13px}
 
 <main>
 <h1>Центр продвижения YouTube</h1>
-<p>Управляй каналом, создавай контент и отслеживай результаты.</p>
+<p>Интеллектуальная платформа для создания контента и развития YouTube-канала.</p>
 
 <div class="grid">
 <div class="card">
@@ -88,55 +90,66 @@ nav button{margin:0;padding:12px 6px;font-size:13px}
 <section id="home" class="active">
 <div class="card">
 <h2>Добро пожаловать в KBR YouTube PRO!</h2>
-<p>Все основные инструменты для развития твоего канала в одном месте.</p>
+<p>Создавай сценарии, получай идеи, улучшай SEO и отслеживай показатели своего канала.</p>
+<p class="ai-label">● ИИ Mistral — подключение через защищённый сервер</p>
 <button onclick="showTab('analysis')">Анализировать канал</button>
 <button onclick="showTab('ideas')">Создать идеи Shorts</button>
 <button class="secondary" onclick="showTab('seo')">Открыть SEO</button>
 </div>
 <div class="card">
 <h2>Твой канал</h2>
-<p id="homeStatus">Добавь API-ключ и проверь статистику канала в разделе анализа.</p>
+<p id="homeStatus">Добавь YouTube API-ключ в настройках, чтобы получать статистику.</p>
+</div>
+<div class="card">
+<h2>Возможности платформы</h2>
+<p>✓ Генерация контента с помощью ИИ</p>
+<p>✓ Создание сценариев Shorts</p>
+<p>✓ SEO-заголовки и описания</p>
+<p>✓ Анализ статистики YouTube</p>
+<p>✓ Планирование публикаций</p>
 </div>
 </section>
 
 <section id="ideas">
 <div class="card">
 <h2>Генератор идей Shorts</h2>
+<p>ИИ подготовит десять оригинальных идей под выбранную тему.</p>
 <label>Тема ролика или канала</label>
 <input id="topic" placeholder="Например: мошенничество и защита молодёжи">
 <label>Направление</label>
 <select id="ideaType">
-<option value="all">Разные форматы</option>
-<option value="facts">Факты и разоблачения</option>
-<option value="story">Истории</option>
-<option value="education">Обучение и советы</option>
-<option value="news">Новости и события</option>
+<option value="Разные форматы">Разные форматы</option>
+<option value="Факты и разоблачения">Факты и разоблачения</option>
+<option value="Истории">Истории</option>
+<option value="Обучение и советы">Обучение и советы</option>
+<option value="Новости и события">Новости и события</option>
 </select>
-<button onclick="makeIdeas()">Создать 10 идей</button>
-<div class="result" id="ideasResult">Здесь появятся идеи.</div>
+<button id="ideasButton" onclick="makeIdeas()">Создать 10 идей</button>
+<div class="result" id="ideasResult">Здесь появятся идеи от ИИ.</div>
 <button class="secondary" onclick="copyResult('ideasResult')">Копировать идеи</button>
 </div>
 
 <div class="card">
-<h2>Сценарий Shorts</h2>
+<h2>Генератор сценариев Shorts</h2>
+<p>Создавай сценарии с цепляющим началом, основной частью и призывом к подписке.</p>
 <label>Тема сценария</label>
 <input id="scriptTopic" placeholder="Напиши тему ролика">
-<button onclick="makeScript()">Создать сценарий</button>
-<div class="result" id="scriptResult">Здесь появится сценарий.</div>
+<button id="scriptButton" onclick="makeScript()">Создать сценарий</button>
+<div class="result" id="scriptResult">Здесь появится сценарий от ИИ.</div>
 <button class="secondary" onclick="copyResult('scriptResult')">Копировать сценарий</button>
-<p><small>Генератор использует встроенные шаблоны. Для настоящей ИИ-генерации потребуется отдельный ИИ-сервис.</small></p>
 </div>
 </section>
 
 <section id="seo">
 <div class="card">
-<h2>SEO-помощник</h2>
+<h2>SEO-помощник YouTube</h2>
+<p>ИИ подготовит заголовки, описание, хештеги и ключевые слова.</p>
 <label>Тема видео</label>
 <input id="video" placeholder="Например: как мошенники обманывают подростков">
 <label>Основное ключевое слово</label>
 <input id="keyword" placeholder="Например: интернет-мошенники">
-<button onclick="makeSEO()">Подготовить SEO</button>
-<div class="result" id="seoResult">Здесь появятся заголовок, описание и хештеги.</div>
+<button id="seoButton" onclick="makeSEO()">Подготовить SEO</button>
+<div class="result" id="seoResult">Здесь появятся SEO-материалы.</div>
 <button class="secondary" onclick="copyResult('seoResult')">Копировать SEO</button>
 </div>
 </section>
@@ -182,27 +195,36 @@ nav button{margin:0;padding:12px 6px;font-size:13px}
 <div class="card">
 <h2>Настройки приложения</h2>
 <label>YouTube Data API v3</label>
-<input id="apiKey" type="password" placeholder="Вставь API-ключ">
-<button onclick="saveSettings()">Сохранить ключ</button>
-<button class="secondary" onclick="clearSettings()">Удалить ключ</button>
+<input id="apiKey" type="password" placeholder="Вставь YouTube API-ключ">
+<button onclick="saveSettings()">Сохранить ключ YouTube</button>
+<button class="secondary" onclick="clearSettings()">Удалить ключ YouTube</button>
 <p id="keyStatus">Проверка настроек...</p>
-<p><small>Ключ хранится в локальном хранилище браузера. Для публичного приложения рекомендуется серверная защита ключа и ограничения API по домену.</small></p>
+<p><small>Ключ YouTube хранится в локальном хранилище браузера. Для публичного приложения рекомендуется серверная защита и ограничения API.</small></p>
 </div>
+
 <div class="card">
 <h2>Настройки канала</h2>
 <label>Ссылка на канал</label>
 <input id="savedChannel" placeholder="https://www.youtube.com/@bekanow1">
 <button onclick="saveChannel()">Сохранить канал</button>
-<p><small>Ссылка будет автоматически подставляться при открытии анализа.</small></p>
 </div>
+
+<div class="card">
+<h2>Подключение искусственного интеллекта</h2>
+<p class="status">● Mistral AI — серверная интеграция</p>
+<p>Ключ ИИ хранится в защищённых переменных Netlify. Вводить его на сайте не нужно.</p>
+<p><small>Для работы генераторов требуется опубликованная серверная функция Netlify и действующий API-ключ Mistral.</small></p>
+</div>
+
 <div class="card">
 <h2>О приложении</h2>
 <p>KBR YouTube PRO © 2026</p>
-<p>Инструменты для идей, SEO, аналитики и планирования контента.</p>
+<p>Инструменты для развития YouTube-каналов.</p>
 </div>
 </section>
 
 </main>
+
 <footer>KBR YouTube PRO © 2026</footer>
 
 <script>
@@ -227,9 +249,15 @@ const value=localStorage.getItem(key);
 return value===null?fallback:value;
 }catch(e){return fallback}
 }
+
 function safeSet(key,value){
-try{localStorage.setItem(key,value);return true}
-catch(e){alert('Не удалось сохранить данные браузера.');return false}
+try{
+localStorage.setItem(key,value);
+return true;
+}catch(e){
+alert('Не удалось сохранить данные браузера.');
+return false;
+}
 }
 
 function showTab(id,btn){
@@ -243,18 +271,28 @@ if(active)active.classList.add('active');
 
 function copyResult(id){
 const value=document.getElementById(id).textContent;
-if(!value.trim()){alert('Нет текста для копирования');return}
+if(!value.trim()){
+alert('Нет текста для копирования');
+return;
+}
 if(navigator.clipboard&&window.isSecureContext){
-navigator.clipboard.writeText(value).then(()=>alert('Скопировано!')).catch(()=>fallbackCopy(value));
+navigator.clipboard.writeText(value)
+.then(()=>alert('Скопировано!'))
+.catch(()=>fallbackCopy(value));
 }else fallbackCopy(value);
 }
+
 function fallbackCopy(value){
 const area=document.createElement('textarea');
 area.value=value;
 document.body.appendChild(area);
 area.select();
-try{document.execCommand('copy');alert('Скопировано!')}
-catch(e){alert('Не удалось скопировать. Выдели текст вручную.')}
+try{
+document.execCommand('copy');
+alert('Скопировано!');
+}catch(e){
+alert('Не удалось скопировать. Выдели текст вручную.');
+}
 area.remove();
 }
 
@@ -262,166 +300,194 @@ function cleanTopic(value){
 return value.trim().replace(/\s+/g,' ').replace(/[.!?]+$/,'');
 }
 
-function makeIdeas(){
-const t=cleanTopic(document.getElementById('topic').value);
+/* ОБЩАЯ ФУНКЦИЯ ПОДКЛЮЧЕНИЯ MISTRAL AI */
+
+async function askAI(action,topic,keyword=''){
+const response=await fetch('/.netlify/functions/ai',{
+method:'POST',
+headers:{'Content-Type':'application/json'},
+body:JSON.stringify({
+action:action,
+topic:topic,
+keyword:keyword
+})
+});
+
+let data;
+try{
+data=await response.json();
+}catch(e){
+throw new Error('Сервер вернул неправильный ответ. Проверь публикацию Netlify.');
+}
+
+if(!response.ok){
+throw new Error(data.error||'Ошибка ИИ-сервера: '+response.status);
+}
+
+if(!data.result){
+throw new Error('ИИ не вернул результат.');
+}
+
+return data.result;
+}
+
+/* ГЕНЕРАТОР ИДЕЙ */
+
+async function makeIdeas(){
+const topic=cleanTopic(document.getElementById('topic').value);
 const type=document.getElementById('ideaType').value;
 const out=document.getElementById('ideasResult');
-if(!t){alert('Напиши тему канала');return}
+const button=document.getElementById('ideasButton');
 
-let ideas;
-if(type==='facts'){
-ideas=[
-'Что скрывается за темой «'+t+'»?',
-'5 фактов о теме «'+t+'», которые важно знать',
-'Одна деталь о теме «'+t+'», которую многие упускают',
-'Правда и мифы: разбираемся в теме «'+t+'»',
-'Как распознать главную опасность в теме «'+t+'»',
-'Три признака, которые нельзя игнорировать',
-'Почему люди ошибаются, когда говорят о теме «'+t+'»',
-'Что обычно остаётся за кадром?',
-'Самый важный урок по теме «'+t+'»',
-'Проверь себя: знаешь ли ты эти факты?'
-];
-}else if(type==='story'){
-ideas=[
-'История, которая заставляет задуматься: '+t,
-'Один случай, который изменил всё',
-'Как всё началось: история о теме «'+t+'»',
-'60 секунд, которые объяснят эту историю',
-'Неожиданный поворот в истории',
-'Чем закончилась эта история?',
-'Одна ошибка и её последствия',
-'История человека, который столкнулся с этой проблемой',
-'Что произошло на самом деле?',
-'Урок, который можно извлечь из этой истории'
-];
-}else if(type==='education'){
-ideas=[
-'Как разобраться в теме «'+t+'» за минуту',
-'3 совета, которые пригодятся каждому',
-'Как не допустить распространённую ошибку',
-'Пошаговая инструкция для начинающих',
-'Что нужно знать перед первым шагом?',
-'Три правила, которые стоит запомнить',
-'Как отличить правду от заблуждения?',
-'Что делать, если столкнулся с этой ситуацией?',
-'Пять полезных рекомендаций',
-'Проверь свои знания: короткий тест'
-];
-}else if(type==='news'){
-ideas=[
-'Главное событие по теме «'+t+'»',
-'Почему эта тема снова обсуждается?',
-'Что произошло и почему это важно?',
-'Три главных факта о событии',
-'Что изменилось и кого это касается?',
-'Объясняем новость за 60 секунд',
-'Что известно на данный момент?',
-'Факт или слух: проверяем информацию',
-'Какие последствия может иметь событие?',
-'Что важно знать прямо сейчас?'
-];
-}else{
-ideas=[
-'5 фактов о теме «'+t+'», которые тебя удивят',
-'Правда и мифы: разбираемся в теме «'+t+'»',
-'Одна ошибка, которая может дорого обойтись',
-'История о теме «'+t+'» за 60 секунд',
-'Три вещи, которые важно знать каждому',
-'Что обычно скрывается за этой темой?',
-'Как распознать опасность и защититься?',
-'Почему люди неправильно понимают эту тему?',
-'Разбор одного реального примера',
-'Главный урок, который стоит запомнить'
-];
-}
-out.textContent=ideas.map((x,i)=>(i+1)+'. '+x).join('\n');
+if(!topic){
+alert('Напиши тему канала');
+return;
 }
 
-function makeScript(){
-const t=cleanTopic(document.getElementById('scriptTopic').value);
-if(!t){alert('Напиши тему сценария');return}
-const result=
-'ЗАГОЛОВОК:\n'+t+' — что важно знать каждому!\n\n'+
-'0–3 СЕКУНДЫ — КРЮЧОК:\n«Ты уверен, что знаешь всю правду об этой теме?»\n\n'+
-'3–15 СЕКУНД — ВСТУПЛЕНИЕ:\nСегодня коротко разбираем тему: '+t+'. Объясним, что важно знать и на что обратить внимание.\n\n'+
-'15–40 СЕКУНД — ОСНОВНАЯ ЧАСТЬ:\nПервое: разберись в фактах и не доверяй непроверенной информации.\nВторое: обращай внимание на детали и проверяй источники.\nТретье: расскажи зрителю конкретный пример по теме «'+t+'».\n\n'+
-'40–55 СЕКУНД — ВЫВОД:\nГлавное — думать критически, проверять информацию и делать выводы на основе фактов.\n\n'+
-'55–60 СЕКУНД — ПРИЗЫВ:\n«Поделись этим видео и подпишись, чтобы не пропустить новые разборы!»\n\n'+
-'Примечание: добавь реальные проверенные примеры и факты перед публикацией.';
-document.getElementById('scriptResult').textContent=result;
+button.disabled=true;
+out.textContent='ИИ Mistral создаёт 10 уникальных идей. Пожалуйста, подожди...';
+
+try{
+const result=await askAI(
+'ideas',
+topic+'. Направление: '+type
+);
+out.textContent=result;
+}catch(error){
+out.textContent='ОШИБКА ПОДКЛЮЧЕНИЯ ИИ:\n'+error.message;
+}finally{
+button.disabled=false;
+}
 }
 
-function makeSEO(){
-const t=cleanTopic(document.getElementById('video').value);
-const keyword=cleanTopic(document.getElementById('keyword').value)||t;
-if(!t){alert('Напиши тему видео');return}
-const tag=t.toLowerCase().replace(/[^\p{L}\p{N}]+/gu,'');
-const keyTag=keyword.toLowerCase().replace(/[^\p{L}\p{N}]+/gu,'');
-const result=
-'ЗАГОЛОВОК:\n'+t+': 3 важных факта, которые должен знать каждый\n\n'+
-'ДОПОЛНИТЕЛЬНЫЕ ВАРИАНТЫ:\n'+
-'1. Что важно знать о теме: '+t+'\n'+
-'2. Разбираем '+t+': факты и ошибки\n'+
-'3. '+t+' — объяснение за 60 секунд\n\n'+
-'ОПИСАНИЕ:\nВ этом видео разбираем тему «'+t+'». Узнай главное, обрати внимание на важные детали и поделись своим мнением в комментариях.\nПодписывайся на канал «Беканов Рамазан», чтобы смотреть новые полезные видео.\n\n'+
-'ХЕШТЕГИ:\n#shorts #'+tag+' #'+keyTag+' #БекановРамазан #полезное\n\n'+
-'КЛЮЧЕВЫЕ СЛОВА:\n'+keyword+', '+t+', полезные советы, объяснение, факты\n\n'+
-'СОВЕТ:\nИспользуй точные ключевые слова в заголовке и первых строках описания. Не обещай в заголовке того, чего нет в ролике.';
-document.getElementById('seoResult').textContent=result;
+/* ГЕНЕРАТОР СЦЕНАРИЕВ */
+
+async function makeScript(){
+const topic=cleanTopic(document.getElementById('scriptTopic').value);
+const out=document.getElementById('scriptResult');
+const button=document.getElementById('scriptButton');
+
+if(!topic){
+alert('Напиши тему сценария');
+return;
 }
+
+button.disabled=true;
+out.textContent='ИИ Mistral пишет сценарий. Пожалуйста, подожди...';
+
+try{
+const result=await askAI('script',topic);
+out.textContent=result;
+}catch(error){
+out.textContent='ОШИБКА ПОДКЛЮЧЕНИЯ ИИ:\n'+error.message;
+}finally{
+button.disabled=false;
+}
+}
+
+/* SEO ГЕНЕРАТОР */
+
+async function makeSEO(){
+const topic=cleanTopic(document.getElementById('video').value);
+const keyword=cleanTopic(document.getElementById('keyword').value)||topic;
+const out=document.getElementById('seoResult');
+const button=document.getElementById('seoButton');
+
+if(!topic){
+alert('Напиши тему видео');
+return;
+}
+
+button.disabled=true;
+out.textContent='ИИ Mistral подготавливает SEO. Пожалуйста, подожди...';
+
+try{
+const result=await askAI('seo',topic,keyword);
+out.textContent=result;
+}catch(error){
+out.textContent='ОШИБКА ПОДКЛЮЧЕНИЯ ИИ:\n'+error.message;
+}finally{
+button.disabled=false;
+}
+}
+
+/* YOUTUBE НАСТРОЙКИ */
 
 function saveSettings(){
 const key=document.getElementById('apiKey').value.trim();
-if(!key){alert('Введи API-ключ');return}
-if(!safeSet(KEY_NAME,key))return;
-document.getElementById('keyStatus').textContent='Ключ сохранён на этом устройстве.';
-document.getElementById('keyStatus').className='status';
-alert('Ключ сохранён.');
+if(!key){
+alert('Введи YouTube API-ключ');
+return;
 }
+if(!safeSet(KEY_NAME,key))return;
+
+document.getElementById('keyStatus').textContent='YouTube API-ключ сохранён на этом устройстве.';
+document.getElementById('keyStatus').className='status';
+alert('Ключ YouTube сохранён.');
+}
+
 function clearSettings(){
-if(!confirm('Удалить сохранённый API-ключ?'))return;
+if(!confirm('Удалить сохранённый YouTube API-ключ?'))return;
 localStorage.removeItem(KEY_NAME);
 document.getElementById('apiKey').value='';
 document.getElementById('keyStatus').textContent='Ключ удалён.';
 }
+
 function saveChannel(){
 const value=document.getElementById('savedChannel').value.trim();
-if(!value){alert('Введи ссылку на канал');return}
+if(!value){
+alert('Введи ссылку на канал');
+return;
+}
 safeSet(CHANNEL_NAME,value);
 document.getElementById('channel').value=value;
 alert('Ссылка на канал сохранена.');
 }
 
+/* СРАВНЕНИЕ СТАТИСТИКИ */
+
 function renderComparison(current){
 const oldText=safeGet(SNAP_NAME,'');
 const box=document.getElementById('comparison');
+
 if(!oldText){
 box.textContent='Это первый сохранённый замер. При следующей проверке можно будет сравнить показатели.';
 safeSet(SNAP_NAME,JSON.stringify(current));
 return;
 }
+
 try{
 const old=JSON.parse(oldText);
 const diff=(a,b)=>a-b;
 const format=n=>(n>0?'+':'')+n.toLocaleString('ru-RU');
+
 box.textContent=
 'ПРЕДЫДУЩИЙ ЗАМЕР:\n'+new Date(old.date).toLocaleString('ru-RU')+'\n\n'+
 'ПРОСМОТРЫ: '+format(diff(current.views,old.views))+'\n'+
 'ПОДПИСЧИКИ: '+format(diff(current.subs,old.subs))+'\n'+
 'ВИДЕО: '+format(diff(current.videos,old.videos))+'\n\n'+
 'ТЕКУЩИЙ ЗАМЕР СОХРАНЁН.';
+
 safeSet(SNAP_NAME,JSON.stringify(current));
-}catch(e){box.textContent='Не удалось прочитать предыдущий замер.'}
+}catch(e){
+box.textContent='Не удалось прочитать предыдущий замер.';
 }
+}
+
+/* АНАЛИЗ YOUTUBE-КАНАЛА */
 
 function extractChannel(input){
 const value=input.trim();
 const handle=value.match(/@([a-zA-Z0-9._-]+)/);
 const id=value.match(/UC[a-zA-Z0-9_-]{20,}/);
+
 if(id)return {type:'id',value:id[0]};
 if(handle)return {type:'handle',value:handle[1]};
-if(/^UC[a-zA-Z0-9_-]{20,}$/.test(value))return {type:'id',value};
+
+if(/^UC[a-zA-Z0-9_-]{20,}$/.test(value)){
+return {type:'id',value};
+}
+
 throw new Error('Вставь ссылку формата youtube.com/@имя или ID канала.');
 }
 
@@ -430,32 +496,53 @@ const input=document.getElementById('channel').value.trim();
 const out=document.getElementById('analysisResult');
 const button=document.getElementById('analyzeButton');
 const key=safeGet(KEY_NAME,'');
-if(!input){alert('Введи ссылку на канал');return}
-if(!key){out.textContent='Сначала открой Настройки и добавь YouTube API-ключ.';return}
+
+if(!input){
+alert('Введи ссылку на канал');
+return;
+}
+
+if(!key){
+out.textContent='Сначала открой Настройки и добавь YouTube API-ключ.';
+return;
+}
+
 button.disabled=true;
-out.textContent='Загружаю данные YouTube...';
+out.textContent='Загружаю статистику YouTube...';
+
 try{
 const channel=extractChannel(input);
+
 const params=new URLSearchParams({
 part:'snippet,statistics',
 key:key
 });
+
 params.set(channel.type==='id'?'id':'forHandle',channel.value);
+
 const url='https://www.googleapis.com/youtube/v3/channels?'+params.toString();
 const response=await fetch(url);
 const data=await response.json();
+
 if(!response.ok){
 throw new Error(data.error?.message||'Ошибка YouTube API: '+response.status);
 }
-if(!data.items||!data.items.length)throw new Error('Канал не найден. Проверь ссылку.');
+
+if(!data.items||!data.items.length){
+throw new Error('Канал не найден. Проверь ссылку.');
+}
+
 const c=data.items[0];
 const s=c.statistics||{};
+
 const views=Number(s.viewCount||0);
 const subs=s.hiddenSubscriberCount?null:Number(s.subscriberCount||0);
 const videos=Number(s.videoCount||0);
+
 document.getElementById('views').textContent=views.toLocaleString('ru-RU');
 document.getElementById('subs').textContent=subs===null?'Скрыто':subs.toLocaleString('ru-RU');
 document.getElementById('videos').textContent=videos.toLocaleString('ru-RU');
+
 const report=
 'КАНАЛ: '+c.snippet.title+'\n\n'+
 'ПРОСМОТРЫ: '+views.toLocaleString('ru-RU')+'\n'+
@@ -463,78 +550,116 @@ const report=
 'ВИДЕО: '+videos.toLocaleString('ru-RU')+'\n\n'+
 'СРЕДНИЕ ПРОСМОТРЫ НА ВИДЕО: '+(videos?Math.round(views/videos).toLocaleString('ru-RU'):'Нет данных')+'\n\n'+
 'Данные получены через YouTube Data API v3.';
+
 out.textContent=report;
 document.getElementById('homeStatus').textContent='Последняя проверка: '+c.snippet.title+'. Статистика успешно загружена.';
-if(subs!==null)renderComparison({views:views,subs:subs,videos:videos,date:new Date().toISOString()});
+
+if(subs!==null){
+renderComparison({
+views:views,
+subs:subs,
+videos:videos,
+date:new Date().toISOString()
+});
+}
+
 }catch(e){
-out.textContent='НЕ УДАЛОСЬ ВЫПОЛНИТЬ АНАЛИЗ:\n'+e.message+'\n\nПроверь API-ключ, доступ к YouTube Data API v3 и ссылку канала.';
+out.textContent='НЕ УДАЛОСЬ ВЫПОЛНИТЬ АНАЛИЗ:\n'+e.message+'\n\nПроверь YouTube API-ключ, доступ к YouTube Data API v3 и ссылку канала.';
 }finally{
 button.disabled=false;
 }
 }
 
+/* ПЛАН ПУБЛИКАЦИЙ */
+
 function getTasks(){
 try{
 const saved=safeGet(TASK_NAME,'');
 return saved?JSON.parse(saved):defaultTasks.map(x=>({...x}));
-}catch(e){return defaultTasks.map(x=>({...x}))}
+}catch(e){
+return defaultTasks.map(x=>({...x}));
 }
+}
+
 function saveTasks(tasks){
 safeSet(TASK_NAME,JSON.stringify(tasks));
 }
+
 function renderTasks(){
 const tasks=getTasks();
 const box=document.getElementById('tasks');
 box.innerHTML='';
+
 tasks.forEach((task,index)=>{
 const row=document.createElement('div');
 row.className='task';
+
 const check=document.createElement('input');
 check.type='checkbox';
 check.checked=!!task.done;
+
 check.addEventListener('change',()=>{
 const all=getTasks();
 all[index].done=check.checked;
 saveTasks(all);
 renderTasks();
 });
+
 const text=document.createElement('span');
 text.textContent=task.day+' — '+task.title;
 if(task.done)text.className='done';
 text.style.flex='1';
+
 const remove=document.createElement('button');
 remove.textContent='Удалить';
 remove.className='secondary';
+
 remove.addEventListener('click',()=>{
 const all=getTasks();
 all.splice(index,1);
 saveTasks(all);
 renderTasks();
 });
+
 row.append(check,text,remove);
 box.appendChild(row);
 });
 }
+
 function addTask(){
 const title=document.getElementById('newTask').value.trim();
 const day=document.getElementById('newDay').value;
-if(!title){alert('Введи название задачи');return}
+
+if(!title){
+alert('Введи название задачи');
+return;
+}
+
 const tasks=getTasks();
 tasks.push({day,title,done:false});
 saveTasks(tasks);
+
 document.getElementById('newTask').value='';
 renderTasks();
 }
+
 function resetTasks(){
 if(!confirm('Вернуть стандартный план публикаций?'))return;
 saveTasks(defaultTasks.map(x=>({...x})));
 renderTasks();
 }
 
+/* ЗАПУСК ПРИЛОЖЕНИЯ */
+
 document.getElementById('apiKey').value=safeGet(KEY_NAME,'');
 document.getElementById('savedChannel').value=safeGet(CHANNEL_NAME,'');
 document.getElementById('channel').value=safeGet(CHANNEL_NAME,'');
-document.getElementById('keyStatus').textContent=safeGet(KEY_NAME,'')?'API-ключ найден в браузере.':'API-ключ пока не добавлен.';
+
+document.getElementById('keyStatus').textContent=
+safeGet(KEY_NAME,'')?
+'YouTube API-ключ найден в браузере.':
+'YouTube API-ключ пока не добавлен.';
+
 renderTasks();
 </script>
 </body>
