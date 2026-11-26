@@ -4,33 +4,48 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#111111">
+<meta name="theme-color" content="#101114">
 <title>KBR YouTube PRO</title>
 <style>
 *{box-sizing:border-box}
 body{margin:0;background:#101114;color:#fff;font-family:Arial,sans-serif}
-header{padding:18px;background:#191a20;border-bottom:1px solid #333;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px}
-.logo{font-size:21px;font-weight:bold;color:#ff3434}
-main{max-width:1100px;margin:auto;padding:18px}
+header{padding:17px;background:#191a20;border-bottom:1px solid #333;display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.logo{font-size:21px;font-weight:bold;color:#ff3838}
+main{max-width:1150px;margin:auto;padding:18px}
 h1{font-size:25px}
 h2{font-size:19px}
 p{color:#aaa;line-height:1.5}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px}
 .card{background:#1b1d24;border:1px solid #30323b;border-radius:14px;padding:17px;margin-bottom:15px}
 .stat{font-size:27px;font-weight:bold;margin:10px 0}
 button{background:#ff3030;color:white;border:0;border-radius:9px;padding:12px 15px;font-weight:bold;cursor:pointer;margin:4px 3px 4px 0}
 button:hover{background:#d82020}
+button.secondary{background:#30323b}
+button:disabled{opacity:.5;cursor:not-allowed}
 input,textarea,select{width:100%;padding:13px;background:#111319;color:white;border:1px solid #42444d;border-radius:9px;margin:8px 0 14px;font-size:15px}
-textarea{min-height:100px}
+textarea{min-height:110px;resize:vertical}
+label{font-size:14px;color:#ddd}
 nav{display:flex;gap:7px;flex-wrap:wrap;margin:20px 0}
 nav button{background:#292b33}
 nav button.active{background:#ff3030}
 section{display:none}
 section.active{display:block}
-.result{white-space:pre-wrap;background:#111319;padding:15px;border-radius:10px;min-height:65px;color:#ddd;overflow-wrap:anywhere;margin-top:12px}
+.result{white-space:pre-wrap;background:#111319;padding:15px;border-radius:10px;min-height:65px;color:#ddd;overflow-wrap:anywhere;margin-top:12px;line-height:1.6}
 small{color:#aaa}
 footer{text-align:center;color:#777;padding:25px}
-a{color:#ff7777}
+.task{display:flex;gap:10px;align-items:center;padding:11px 0;border-bottom:1px solid #333}
+.task input{width:auto;margin:0}
+.done{text-decoration:line-through;color:#777}
+.status{color:#80df9a}
+.error{color:#ff8585}
+.muted{color:#999}
+@media(max-width:600px){
+main{padding:12px}
+h1{font-size:22px}
+nav{display:grid;grid-template-columns:1fr 1fr}
+nav button{margin:0;padding:12px 6px;font-size:13px}
+.card{padding:14px}
+}
 </style>
 </head>
 <body>
@@ -38,9 +53,10 @@ a{color:#ff7777}
 <div class="logo">▶ KBR YouTube PRO</div>
 <span>Панель управления</span>
 </header>
+
 <main>
 <h1>Центр продвижения YouTube</h1>
-<p>Твой помощник по развитию YouTube-канала.</p>
+<p>Управляй каналом, создавай контент и отслеживай результаты.</p>
 
 <div class="grid">
 <div class="card">
@@ -61,30 +77,54 @@ a{color:#ff7777}
 </div>
 
 <nav>
-<button class="active" onclick="showTab('home',this)">Главная</button>
-<button onclick="showTab('ideas',this)">Идеи Shorts</button>
-<button onclick="showTab('seo',this)">SEO видео</button>
-<button onclick="showTab('analysis',this)">Анализ YouTube</button>
-<button onclick="showTab('plan',this)">План публикаций</button>
-<button onclick="showTab('settings',this)">Настройки</button>
+<button class="active" data-tab="home" onclick="showTab('home',this)">Главная</button>
+<button data-tab="ideas" onclick="showTab('ideas',this)">Идеи Shorts</button>
+<button data-tab="seo" onclick="showTab('seo',this)">SEO видео</button>
+<button data-tab="analysis" onclick="showTab('analysis',this)">Анализ YouTube</button>
+<button data-tab="plan" onclick="showTab('plan',this)">План публикаций</button>
+<button data-tab="settings" onclick="showTab('settings',this)">Настройки</button>
 </nav>
 
 <section id="home" class="active">
 <div class="card">
 <h2>Добро пожаловать в KBR YouTube PRO!</h2>
-<p>Управляй развитием канала в одном приложении.</p>
-<button onclick="showTab('analysis',document.querySelectorAll('nav button')[3])">Открыть анализ YouTube</button>
-<button onclick="showTab('ideas',document.querySelectorAll('nav button')[1])">Создать идеи Shorts</button>
+<p>Все основные инструменты для развития твоего канала в одном месте.</p>
+<button onclick="showTab('analysis')">Анализировать канал</button>
+<button onclick="showTab('ideas')">Создать идеи Shorts</button>
+<button class="secondary" onclick="showTab('seo')">Открыть SEO</button>
+</div>
+<div class="card">
+<h2>Твой канал</h2>
+<p id="homeStatus">Добавь API-ключ и проверь статистику канала в разделе анализа.</p>
 </div>
 </section>
 
 <section id="ideas">
 <div class="card">
 <h2>Генератор идей Shorts</h2>
-<label>Тема канала</label>
-<input id="topic" placeholder="Например: история, юмор, новости">
-<button onclick="makeIdeas()">Создать идеи</button>
+<label>Тема ролика или канала</label>
+<input id="topic" placeholder="Например: мошенничество и защита молодёжи">
+<label>Направление</label>
+<select id="ideaType">
+<option value="all">Разные форматы</option>
+<option value="facts">Факты и разоблачения</option>
+<option value="story">Истории</option>
+<option value="education">Обучение и советы</option>
+<option value="news">Новости и события</option>
+</select>
+<button onclick="makeIdeas()">Создать 10 идей</button>
 <div class="result" id="ideasResult">Здесь появятся идеи.</div>
+<button class="secondary" onclick="copyResult('ideasResult')">Копировать идеи</button>
+</div>
+
+<div class="card">
+<h2>Сценарий Shorts</h2>
+<label>Тема сценария</label>
+<input id="scriptTopic" placeholder="Напиши тему ролика">
+<button onclick="makeScript()">Создать сценарий</button>
+<div class="result" id="scriptResult">Здесь появится сценарий.</div>
+<button class="secondary" onclick="copyResult('scriptResult')">Копировать сценарий</button>
+<p><small>Генератор использует встроенные шаблоны. Для настоящей ИИ-генерации потребуется отдельный ИИ-сервис.</small></p>
 </div>
 </section>
 
@@ -92,9 +132,12 @@ a{color:#ff7777}
 <div class="card">
 <h2>SEO-помощник</h2>
 <label>Тема видео</label>
-<input id="video" placeholder="Напиши тему видео">
+<input id="video" placeholder="Например: как мошенники обманывают подростков">
+<label>Основное ключевое слово</label>
+<input id="keyword" placeholder="Например: интернет-мошенники">
 <button onclick="makeSEO()">Подготовить SEO</button>
 <div class="result" id="seoResult">Здесь появятся заголовок, описание и хештеги.</div>
+<button class="secondary" onclick="copyResult('seoResult')">Копировать SEO</button>
 </div>
 </section>
 
@@ -102,125 +145,397 @@ a{color:#ff7777}
 <div class="card">
 <h2>Анализ YouTube-канала</h2>
 <p>Введи ссылку на свой канал или его ID.</p>
-<input id="channel" placeholder="https://www.youtube.com/@название">
-<button onclick="analyzeChannel()">Анализировать канал</button>
+<input id="channel" placeholder="https://www.youtube.com/@bekanow1">
+<button id="analyzeButton" onclick="analyzeChannel()">Анализировать канал</button>
 <div class="result" id="analysisResult">Ожидаю ссылку на канал.</div>
+<button class="secondary" onclick="copyResult('analysisResult')">Копировать отчёт</button>
+</div>
+<div class="card">
+<h2>Сравнение статистики</h2>
+<div class="result" id="comparison">Пока нет сохранённых замеров.</div>
 </div>
 </section>
 
 <section id="plan">
 <div class="card">
 <h2>План публикаций</h2>
-<p>Понедельник — подготовка сценария.</p>
-<p>Вторник — публикация Shorts.</p>
-<p>Среда — анализ результатов.</p>
-<p>Четверг — новый ролик.</p>
-<p>Пятница — подготовка обложек.</p>
-<p>Суббота — публикация Shorts.</p>
-<p>Воскресенье — анализ недели.</p>
+<p>Отмечай выполненные задачи. Изменения сохраняются на устройстве.</p>
+<div id="tasks"></div>
+<label>Новая задача</label>
+<input id="newTask" placeholder="Например: подготовить сценарий">
+<label>День недели</label>
+<select id="newDay">
+<option>Понедельник</option>
+<option>Вторник</option>
+<option>Среда</option>
+<option>Четверг</option>
+<option>Пятница</option>
+<option>Суббота</option>
+<option>Воскресенье</option>
+</select>
+<button onclick="addTask()">Добавить задачу</button>
+<button class="secondary" onclick="resetTasks()">Вернуть стандартный план</button>
 </div>
 </section>
 
 <section id="settings">
 <div class="card">
 <h2>Настройки приложения</h2>
-<label>Ключ YouTube Data API v3</label>
+<label>YouTube Data API v3</label>
 <input id="apiKey" type="password" placeholder="Вставь API-ключ">
-<button onclick="saveSettings()">Сохранить ключ на этом устройстве</button>
-<button onclick="clearSettings()">Удалить сохранённый ключ</button>
-<p>Важно: ключ хранится только в браузере. Не публикуй его и не отправляй другим людям. Для полноценного публичного приложения потребуется серверная защита ключа.</p>
+<button onclick="saveSettings()">Сохранить ключ</button>
+<button class="secondary" onclick="clearSettings()">Удалить ключ</button>
+<p id="keyStatus">Проверка настроек...</p>
+<p><small>Ключ хранится в локальном хранилище браузера. Для публичного приложения рекомендуется серверная защита ключа и ограничения API по домену.</small></p>
+</div>
+<div class="card">
+<h2>Настройки канала</h2>
+<label>Ссылка на канал</label>
+<input id="savedChannel" placeholder="https://www.youtube.com/@bekanow1">
+<button onclick="saveChannel()">Сохранить канал</button>
+<p><small>Ссылка будет автоматически подставляться при открытии анализа.</small></p>
+</div>
+<div class="card">
+<h2>О приложении</h2>
+<p>KBR YouTube PRO © 2026</p>
+<p>Инструменты для идей, SEO, аналитики и планирования контента.</p>
 </div>
 </section>
+
 </main>
 <footer>KBR YouTube PRO © 2026</footer>
 
 <script>
+const KEY_NAME='kbr_youtube_api_key';
+const CHANNEL_NAME='kbr_youtube_channel';
+const TASK_NAME='kbr_youtube_tasks';
+const SNAP_NAME='kbr_youtube_snapshot';
+
+const defaultTasks=[
+{day:'Понедельник',title:'Подготовить сценарий',done:false},
+{day:'Вторник',title:'Опубликовать Shorts',done:false},
+{day:'Среда',title:'Проверить результаты',done:false},
+{day:'Четверг',title:'Подготовить новый ролик',done:false},
+{day:'Пятница',title:'Подготовить обложки',done:false},
+{day:'Суббота',title:'Опубликовать Shorts',done:false},
+{day:'Воскресенье',title:'Проанализировать неделю',done:false}
+];
+
+function safeGet(key,fallback){
+try{
+const value=localStorage.getItem(key);
+return value===null?fallback:value;
+}catch(e){return fallback}
+}
+function safeSet(key,value){
+try{localStorage.setItem(key,value);return true}
+catch(e){alert('Не удалось сохранить данные браузера.');return false}
+}
+
 function showTab(id,btn){
 document.querySelectorAll('section').forEach(s=>s.classList.remove('active'));
 document.querySelectorAll('nav button').forEach(b=>b.classList.remove('active'));
-document.getElementById(id).classList.add('active');
-if(btn)btn.classList.add('active');
+const section=document.getElementById(id);
+if(section)section.classList.add('active');
+const active=btn||document.querySelector('nav button[data-tab="'+id+'"]');
+if(active)active.classList.add('active');
+}
+
+function copyResult(id){
+const value=document.getElementById(id).textContent;
+if(!value.trim()){alert('Нет текста для копирования');return}
+if(navigator.clipboard&&window.isSecureContext){
+navigator.clipboard.writeText(value).then(()=>alert('Скопировано!')).catch(()=>fallbackCopy(value));
+}else fallbackCopy(value);
+}
+function fallbackCopy(value){
+const area=document.createElement('textarea');
+area.value=value;
+document.body.appendChild(area);
+area.select();
+try{document.execCommand('copy');alert('Скопировано!')}
+catch(e){alert('Не удалось скопировать. Выдели текст вручную.')}
+area.remove();
+}
+
+function cleanTopic(value){
+return value.trim().replace(/\s+/g,' ').replace(/[.!?]+$/,'');
 }
 
 function makeIdeas(){
-let t=document.getElementById('topic').value.trim();
+const t=cleanTopic(document.getElementById('topic').value);
+const type=document.getElementById('ideaType').value;
+const out=document.getElementById('ideasResult');
 if(!t){alert('Напиши тему канала');return}
-let ideas=[
-'5 неожиданных фактов о '+t,
-'Правда, о которой молчат: '+t,
-'История '+t+' за 60 секунд',
-'3 ошибки, которые совершают в теме '+t,
-'Что будет, если узнать всю правду о '+t,
-'Самый удивительный факт о '+t,
-'Мифы и реальность: '+t,
-'Почему все говорят о '+t+'?',
-'Топ-5 интересных событий: '+t,
-'Один факт о '+t+', который тебя удивит'
+
+let ideas;
+if(type==='facts'){
+ideas=[
+'Что скрывается за темой «'+t+'»?',
+'5 фактов о теме «'+t+'», которые важно знать',
+'Одна деталь о теме «'+t+'», которую многие упускают',
+'Правда и мифы: разбираемся в теме «'+t+'»',
+'Как распознать главную опасность в теме «'+t+'»',
+'Три признака, которые нельзя игнорировать',
+'Почему люди ошибаются, когда говорят о теме «'+t+'»',
+'Что обычно остаётся за кадром?',
+'Самый важный урок по теме «'+t+'»',
+'Проверь себя: знаешь ли ты эти факты?'
 ];
-document.getElementById('ideasResult').textContent=ideas.map((x,i)=>(i+1)+'. '+x).join('\n');
+}else if(type==='story'){
+ideas=[
+'История, которая заставляет задуматься: '+t,
+'Один случай, который изменил всё',
+'Как всё началось: история о теме «'+t+'»',
+'60 секунд, которые объяснят эту историю',
+'Неожиданный поворот в истории',
+'Чем закончилась эта история?',
+'Одна ошибка и её последствия',
+'История человека, который столкнулся с этой проблемой',
+'Что произошло на самом деле?',
+'Урок, который можно извлечь из этой истории'
+];
+}else if(type==='education'){
+ideas=[
+'Как разобраться в теме «'+t+'» за минуту',
+'3 совета, которые пригодятся каждому',
+'Как не допустить распространённую ошибку',
+'Пошаговая инструкция для начинающих',
+'Что нужно знать перед первым шагом?',
+'Три правила, которые стоит запомнить',
+'Как отличить правду от заблуждения?',
+'Что делать, если столкнулся с этой ситуацией?',
+'Пять полезных рекомендаций',
+'Проверь свои знания: короткий тест'
+];
+}else if(type==='news'){
+ideas=[
+'Главное событие по теме «'+t+'»',
+'Почему эта тема снова обсуждается?',
+'Что произошло и почему это важно?',
+'Три главных факта о событии',
+'Что изменилось и кого это касается?',
+'Объясняем новость за 60 секунд',
+'Что известно на данный момент?',
+'Факт или слух: проверяем информацию',
+'Какие последствия может иметь событие?',
+'Что важно знать прямо сейчас?'
+];
+}else{
+ideas=[
+'5 фактов о теме «'+t+'», которые тебя удивят',
+'Правда и мифы: разбираемся в теме «'+t+'»',
+'Одна ошибка, которая может дорого обойтись',
+'История о теме «'+t+'» за 60 секунд',
+'Три вещи, которые важно знать каждому',
+'Что обычно скрывается за этой темой?',
+'Как распознать опасность и защититься?',
+'Почему люди неправильно понимают эту тему?',
+'Разбор одного реального примера',
+'Главный урок, который стоит запомнить'
+];
+}
+out.textContent=ideas.map((x,i)=>(i+1)+'. '+x).join('\n');
+}
+
+function makeScript(){
+const t=cleanTopic(document.getElementById('scriptTopic').value);
+if(!t){alert('Напиши тему сценария');return}
+const result=
+'ЗАГОЛОВОК:\n'+t+' — что важно знать каждому!\n\n'+
+'0–3 СЕКУНДЫ — КРЮЧОК:\n«Ты уверен, что знаешь всю правду об этой теме?»\n\n'+
+'3–15 СЕКУНД — ВСТУПЛЕНИЕ:\nСегодня коротко разбираем тему: '+t+'. Объясним, что важно знать и на что обратить внимание.\n\n'+
+'15–40 СЕКУНД — ОСНОВНАЯ ЧАСТЬ:\nПервое: разберись в фактах и не доверяй непроверенной информации.\nВторое: обращай внимание на детали и проверяй источники.\nТретье: расскажи зрителю конкретный пример по теме «'+t+'».\n\n'+
+'40–55 СЕКУНД — ВЫВОД:\nГлавное — думать критически, проверять информацию и делать выводы на основе фактов.\n\n'+
+'55–60 СЕКУНД — ПРИЗЫВ:\n«Поделись этим видео и подпишись, чтобы не пропустить новые разборы!»\n\n'+
+'Примечание: добавь реальные проверенные примеры и факты перед публикацией.';
+document.getElementById('scriptResult').textContent=result;
 }
 
 function makeSEO(){
-let t=document.getElementById('video').value.trim();
+const t=cleanTopic(document.getElementById('video').value);
+const keyword=cleanTopic(document.getElementById('keyword').value)||t;
 if(!t){alert('Напиши тему видео');return}
-document.getElementById('seoResult').textContent=
-'ЗАГОЛОВОК:\n'+t+' — факты, которые тебя удивят!\n\n'+
-'ОПИСАНИЕ:\nВ этом видео разбираем тему: '+t+'. Смотри до конца, делись мнением и подписывайся на канал!\n\n'+
-'ХЕШТЕГИ:\n#shorts #youtube #'+t.replace(/[^\p{L}\p{N}]/gu,'')+'\n\n'+
-'СОВЕТ:\nДобавь ключевые слова в название и первые строки описания.';
+const tag=t.toLowerCase().replace(/[^\p{L}\p{N}]+/gu,'');
+const keyTag=keyword.toLowerCase().replace(/[^\p{L}\p{N}]+/gu,'');
+const result=
+'ЗАГОЛОВОК:\n'+t+': 3 важных факта, которые должен знать каждый\n\n'+
+'ДОПОЛНИТЕЛЬНЫЕ ВАРИАНТЫ:\n'+
+'1. Что важно знать о теме: '+t+'\n'+
+'2. Разбираем '+t+': факты и ошибки\n'+
+'3. '+t+' — объяснение за 60 секунд\n\n'+
+'ОПИСАНИЕ:\nВ этом видео разбираем тему «'+t+'». Узнай главное, обрати внимание на важные детали и поделись своим мнением в комментариях.\nПодписывайся на канал «Беканов Рамазан», чтобы смотреть новые полезные видео.\n\n'+
+'ХЕШТЕГИ:\n#shorts #'+tag+' #'+keyTag+' #БекановРамазан #полезное\n\n'+
+'КЛЮЧЕВЫЕ СЛОВА:\n'+keyword+', '+t+', полезные советы, объяснение, факты\n\n'+
+'СОВЕТ:\nИспользуй точные ключевые слова в заголовке и первых строках описания. Не обещай в заголовке того, чего нет в ролике.';
+document.getElementById('seoResult').textContent=result;
 }
 
 function saveSettings(){
-let k=document.getElementById('apiKey').value.trim();
-if(!k){alert('Введи API-ключ');return}
-localStorage.setItem('kbr_youtube_api_key',k);
-alert('Ключ сохранён на этом устройстве.');
+const key=document.getElementById('apiKey').value.trim();
+if(!key){alert('Введи API-ключ');return}
+if(!safeSet(KEY_NAME,key))return;
+document.getElementById('keyStatus').textContent='Ключ сохранён на этом устройстве.';
+document.getElementById('keyStatus').className='status';
+alert('Ключ сохранён.');
+}
+function clearSettings(){
+if(!confirm('Удалить сохранённый API-ключ?'))return;
+localStorage.removeItem(KEY_NAME);
+document.getElementById('apiKey').value='';
+document.getElementById('keyStatus').textContent='Ключ удалён.';
+}
+function saveChannel(){
+const value=document.getElementById('savedChannel').value.trim();
+if(!value){alert('Введи ссылку на канал');return}
+safeSet(CHANNEL_NAME,value);
+document.getElementById('channel').value=value;
+alert('Ссылка на канал сохранена.');
 }
 
-function clearSettings(){
-localStorage.removeItem('kbr_youtube_api_key');
-document.getElementById('apiKey').value='';
-alert('Ключ удалён.');
+function renderComparison(current){
+const oldText=safeGet(SNAP_NAME,'');
+const box=document.getElementById('comparison');
+if(!oldText){
+box.textContent='Это первый сохранённый замер. При следующей проверке можно будет сравнить показатели.';
+safeSet(SNAP_NAME,JSON.stringify(current));
+return;
+}
+try{
+const old=JSON.parse(oldText);
+const diff=(a,b)=>a-b;
+const format=n=>(n>0?'+':'')+n.toLocaleString('ru-RU');
+box.textContent=
+'ПРЕДЫДУЩИЙ ЗАМЕР:\n'+new Date(old.date).toLocaleString('ru-RU')+'\n\n'+
+'ПРОСМОТРЫ: '+format(diff(current.views,old.views))+'\n'+
+'ПОДПИСЧИКИ: '+format(diff(current.subs,old.subs))+'\n'+
+'ВИДЕО: '+format(diff(current.videos,old.videos))+'\n\n'+
+'ТЕКУЩИЙ ЗАМЕР СОХРАНЁН.';
+safeSet(SNAP_NAME,JSON.stringify(current));
+}catch(e){box.textContent='Не удалось прочитать предыдущий замер.'}
+}
+
+function extractChannel(input){
+const value=input.trim();
+const handle=value.match(/@([a-zA-Z0-9._-]+)/);
+const id=value.match(/UC[a-zA-Z0-9_-]{20,}/);
+if(id)return {type:'id',value:id[0]};
+if(handle)return {type:'handle',value:handle[1]};
+if(/^UC[a-zA-Z0-9_-]{20,}$/.test(value))return {type:'id',value};
+throw new Error('Вставь ссылку формата youtube.com/@имя или ID канала.');
 }
 
 async function analyzeChannel(){
-let input=document.getElementById('channel').value.trim();
-let out=document.getElementById('analysisResult');
-let key=localStorage.getItem('kbr_youtube_api_key');
+const input=document.getElementById('channel').value.trim();
+const out=document.getElementById('analysisResult');
+const button=document.getElementById('analyzeButton');
+const key=safeGet(KEY_NAME,'');
 if(!input){alert('Введи ссылку на канал');return}
-if(!key){
-out.textContent='Сначала открой Настройки и добавь YouTube API-ключ.';
-return;
-}
-out.textContent='Загружаю данные канала...';
+if(!key){out.textContent='Сначала открой Настройки и добавь YouTube API-ключ.';return}
+button.disabled=true;
+out.textContent='Загружаю данные YouTube...';
 try{
-let handle=input.match(/@[\w.-]+/);
-let id=input.match(/UC[\w-]{20,}/);
-let url='https://www.googleapis.com/youtube/v3/channels?part=snippet,statistics&';
-if(id)url+='id='+encodeURIComponent(id[0]);
-else if(handle)url+='forHandle='+encodeURIComponent(handle[0].slice(1));
-else throw new Error('Не удалось определить ID или @имя канала.');
-url+='&key='+encodeURIComponent(key);
-let response=await fetch(url);
-let data=await response.json();
-if(!response.ok)throw new Error(data.error?.message||'Ошибка YouTube API');
+const channel=extractChannel(input);
+const params=new URLSearchParams({
+part:'snippet,statistics',
+key:key
+});
+params.set(channel.type==='id'?'id':'forHandle',channel.value);
+const url='https://www.googleapis.com/youtube/v3/channels?'+params.toString();
+const response=await fetch(url);
+const data=await response.json();
+if(!response.ok){
+throw new Error(data.error?.message||'Ошибка YouTube API: '+response.status);
+}
 if(!data.items||!data.items.length)throw new Error('Канал не найден. Проверь ссылку.');
-let c=data.items[0];
-let s=c.statistics;
-document.getElementById('views').textContent=Number(s.viewCount||0).toLocaleString('ru-RU');
-document.getElementById('subs').textContent=s.hiddenSubscriberCount?'Скрыто':Number(s.subscriberCount||0).toLocaleString('ru-RU');
-document.getElementById('videos').textContent=Number(s.videoCount||0).toLocaleString('ru-RU');
-out.textContent='КАНАЛ: '+c.snippet.title+'\n\n'+
-'ПРОСМОТРЫ: '+Number(s.viewCount||0).toLocaleString('ru-RU')+'\n'+
-'ПОДПИСЧИКИ: '+(s.hiddenSubscriberCount?'Скрыто':Number(s.subscriberCount||0).toLocaleString('ru-RU'))+'\n'+
-'ВИДЕО: '+Number(s.videoCount||0).toLocaleString('ru-RU')+'\n\n'+
+const c=data.items[0];
+const s=c.statistics||{};
+const views=Number(s.viewCount||0);
+const subs=s.hiddenSubscriberCount?null:Number(s.subscriberCount||0);
+const videos=Number(s.videoCount||0);
+document.getElementById('views').textContent=views.toLocaleString('ru-RU');
+document.getElementById('subs').textContent=subs===null?'Скрыто':subs.toLocaleString('ru-RU');
+document.getElementById('videos').textContent=videos.toLocaleString('ru-RU');
+const report=
+'КАНАЛ: '+c.snippet.title+'\n\n'+
+'ПРОСМОТРЫ: '+views.toLocaleString('ru-RU')+'\n'+
+'ПОДПИСЧИКИ: '+(subs===null?'Скрыто':subs.toLocaleString('ru-RU'))+'\n'+
+'ВИДЕО: '+videos.toLocaleString('ru-RU')+'\n\n'+
+'СРЕДНИЕ ПРОСМОТРЫ НА ВИДЕО: '+(videos?Math.round(views/videos).toLocaleString('ru-RU'):'Нет данных')+'\n\n'+
 'Данные получены через YouTube Data API v3.';
+out.textContent=report;
+document.getElementById('homeStatus').textContent='Последняя проверка: '+c.snippet.title+'. Статистика успешно загружена.';
+if(subs!==null)renderComparison({views:views,subs:subs,videos:videos,date:new Date().toISOString()});
 }catch(e){
-out.textContent='Не удалось выполнить анализ:\n'+e.message;
+out.textContent='НЕ УДАЛОСЬ ВЫПОЛНИТЬ АНАЛИЗ:\n'+e.message+'\n\nПроверь API-ключ, доступ к YouTube Data API v3 и ссылку канала.';
+}finally{
+button.disabled=false;
 }
 }
 
-document.getElementById('apiKey').value=localStorage.getItem('kbr_youtube_api_key')||'';
+function getTasks(){
+try{
+const saved=safeGet(TASK_NAME,'');
+return saved?JSON.parse(saved):defaultTasks.map(x=>({...x}));
+}catch(e){return defaultTasks.map(x=>({...x}))}
+}
+function saveTasks(tasks){
+safeSet(TASK_NAME,JSON.stringify(tasks));
+}
+function renderTasks(){
+const tasks=getTasks();
+const box=document.getElementById('tasks');
+box.innerHTML='';
+tasks.forEach((task,index)=>{
+const row=document.createElement('div');
+row.className='task';
+const check=document.createElement('input');
+check.type='checkbox';
+check.checked=!!task.done;
+check.addEventListener('change',()=>{
+const all=getTasks();
+all[index].done=check.checked;
+saveTasks(all);
+renderTasks();
+});
+const text=document.createElement('span');
+text.textContent=task.day+' — '+task.title;
+if(task.done)text.className='done';
+text.style.flex='1';
+const remove=document.createElement('button');
+remove.textContent='Удалить';
+remove.className='secondary';
+remove.addEventListener('click',()=>{
+const all=getTasks();
+all.splice(index,1);
+saveTasks(all);
+renderTasks();
+});
+row.append(check,text,remove);
+box.appendChild(row);
+});
+}
+function addTask(){
+const title=document.getElementById('newTask').value.trim();
+const day=document.getElementById('newDay').value;
+if(!title){alert('Введи название задачи');return}
+const tasks=getTasks();
+tasks.push({day,title,done:false});
+saveTasks(tasks);
+document.getElementById('newTask').value='';
+renderTasks();
+}
+function resetTasks(){
+if(!confirm('Вернуть стандартный план публикаций?'))return;
+saveTasks(defaultTasks.map(x=>({...x})));
+renderTasks();
+}
+
+document.getElementById('apiKey').value=safeGet(KEY_NAME,'');
+document.getElementById('savedChannel').value=safeGet(CHANNEL_NAME,'');
+document.getElementById('channel').value=safeGet(CHANNEL_NAME,'');
+document.getElementById('keyStatus').textContent=safeGet(KEY_NAME,'')?'API-ключ найден в браузере.':'API-ключ пока не добавлен.';
+renderTasks();
 </script>
 </body>
 </html>
