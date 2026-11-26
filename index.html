@@ -3,127 +3,224 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#111111">
 <title>KBR YouTube PRO</title>
 <style>
 *{box-sizing:border-box}
 body{margin:0;background:#101114;color:#fff;font-family:Arial,sans-serif}
-header{padding:20px;background:#191a20;border-bottom:1px solid #333;display:flex;justify-content:space-between;align-items:center}
-.logo{font-size:22px;font-weight:bold;color:#ff3434}
-main{max-width:1100px;margin:auto;padding:20px}
-h1{font-size:26px}
+header{padding:18px;background:#191a20;border-bottom:1px solid #333;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px}
+.logo{font-size:21px;font-weight:bold;color:#ff3434}
+main{max-width:1100px;margin:auto;padding:18px}
+h1{font-size:25px}
 h2{font-size:19px}
 p{color:#aaa;line-height:1.5}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:15px}
-.card{background:#1b1d24;border:1px solid #30323b;border-radius:14px;padding:18px;margin-bottom:16px}
-.stat{font-size:28px;font-weight:bold;margin-top:12px}
-button{background:#ff3030;color:white;border:0;border-radius:9px;padding:12px 16px;font-weight:bold;cursor:pointer}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px}
+.card{background:#1b1d24;border:1px solid #30323b;border-radius:14px;padding:17px;margin-bottom:15px}
+.stat{font-size:27px;font-weight:bold;margin:10px 0}
+button{background:#ff3030;color:white;border:0;border-radius:9px;padding:12px 15px;font-weight:bold;cursor:pointer;margin:4px 3px 4px 0}
 button:hover{background:#d82020}
 input,textarea,select{width:100%;padding:13px;background:#111319;color:white;border:1px solid #42444d;border-radius:9px;margin:8px 0 14px;font-size:15px}
-textarea{min-height:100px;resize:vertical}
-.result{white-space:pre-wrap;background:#111319;padding:15px;border-radius:10px;min-height:60px;color:#ddd;overflow-wrap:anywhere}
-nav{display:flex;gap:8px;flex-wrap:wrap;margin:20px 0}
+textarea{min-height:100px}
+nav{display:flex;gap:7px;flex-wrap:wrap;margin:20px 0}
 nav button{background:#292b33}
 nav button.active{background:#ff3030}
 section{display:none}
 section.active{display:block}
-footer{text-align:center;color:#777;padding:30px}
+.result{white-space:pre-wrap;background:#111319;padding:15px;border-radius:10px;min-height:65px;color:#ddd;overflow-wrap:anywhere;margin-top:12px}
+small{color:#aaa}
+footer{text-align:center;color:#777;padding:25px}
+a{color:#ff7777}
 </style>
 </head>
 <body>
 <header>
- <div class="logo">▶ KBR YouTube PRO</div>
- <span>Панель управления</span>
+<div class="logo">▶ KBR YouTube PRO</div>
+<span>Панель управления</span>
 </header>
 <main>
 <h1>Центр продвижения YouTube</h1>
-<p>Создавай контент, оптимизируй видео и развивай свой канал.</p>
+<p>Твой помощник по развитию YouTube-канала.</p>
 
 <div class="grid">
- <div class="card"><p>Просмотры канала</p><div class="stat">—</div><small>Подключи YouTube</small></div>
- <div class="card"><p>Подписчики</p><div class="stat">—</div><small>Подключи YouTube</small></div>
- <div class="card"><p>Видео</p><div class="stat">—</div><small>Данные появятся после подключения</small></div>
+<div class="card">
+<p>Просмотры канала</p>
+<div class="stat" id="views">—</div>
+<small>Данные YouTube</small>
+</div>
+<div class="card">
+<p>Подписчики</p>
+<div class="stat" id="subs">—</div>
+<small>Данные YouTube</small>
+</div>
+<div class="card">
+<p>Видео</p>
+<div class="stat" id="videos">—</div>
+<small>Данные YouTube</small>
+</div>
 </div>
 
 <nav>
 <button class="active" onclick="showTab('home',this)">Главная</button>
 <button onclick="showTab('ideas',this)">Идеи Shorts</button>
 <button onclick="showTab('seo',this)">SEO видео</button>
+<button onclick="showTab('analysis',this)">Анализ YouTube</button>
 <button onclick="showTab('plan',this)">План публикаций</button>
+<button onclick="showTab('settings',this)">Настройки</button>
 </nav>
 
 <section id="home" class="active">
- <div class="card">
- <h2>Добро пожаловать в KBR YouTube PRO!</h2>
- <p>Здесь будет твой личный помощник по развитию YouTube-канала.</p>
- <p>Следующий этап — подключение YouTube и искусственного интеллекта.</p>
- </div>
+<div class="card">
+<h2>Добро пожаловать в KBR YouTube PRO!</h2>
+<p>Управляй развитием канала в одном приложении.</p>
+<button onclick="showTab('analysis',document.querySelectorAll('nav button')[3])">Открыть анализ YouTube</button>
+<button onclick="showTab('ideas',document.querySelectorAll('nav button')[1])">Создать идеи Shorts</button>
+</div>
 </section>
 
 <section id="ideas">
- <div class="card">
- <h2>Генератор идей Shorts</h2>
- <label>Тема твоего канала</label>
- <input id="topic" placeholder="Например: история, юмор, новости">
- <button onclick="makeIdeas()">Создать идеи</button>
- <div class="result" id="ideasResult">Здесь появятся идеи.</div>
- </div>
+<div class="card">
+<h2>Генератор идей Shorts</h2>
+<label>Тема канала</label>
+<input id="topic" placeholder="Например: история, юмор, новости">
+<button onclick="makeIdeas()">Создать идеи</button>
+<div class="result" id="ideasResult">Здесь появятся идеи.</div>
+</div>
 </section>
 
 <section id="seo">
- <div class="card">
- <h2>SEO-помощник</h2>
- <label>Тема видео</label>
- <input id="video" placeholder="Напиши тему ролика">
- <button onclick="makeSEO()">Подготовить SEO</button>
- <div class="result" id="seoResult">Здесь появятся заголовок, описание и хештеги.</div>
- </div>
+<div class="card">
+<h2>SEO-помощник</h2>
+<label>Тема видео</label>
+<input id="video" placeholder="Напиши тему видео">
+<button onclick="makeSEO()">Подготовить SEO</button>
+<div class="result" id="seoResult">Здесь появятся заголовок, описание и хештеги.</div>
+</div>
+</section>
+
+<section id="analysis">
+<div class="card">
+<h2>Анализ YouTube-канала</h2>
+<p>Введи ссылку на свой канал или его ID.</p>
+<input id="channel" placeholder="https://www.youtube.com/@название">
+<button onclick="analyzeChannel()">Анализировать канал</button>
+<div class="result" id="analysisResult">Ожидаю ссылку на канал.</div>
+</div>
 </section>
 
 <section id="plan">
- <div class="card">
- <h2>План публикаций</h2>
- <p>Твой календарь развития канала.</p>
- <ul>
- <li>Понедельник — подготовка сценария.</li>
- <li>Вторник — публикация Shorts.</li>
- <li>Среда — анализ результатов.</li>
- <li>Четверг — новый ролик.</li>
- <li>Пятница — подготовка обложек.</li>
- <li>Суббота — публикация Shorts.</li>
- <li>Воскресенье — анализ недели.</li>
- </ul>
- </div>
+<div class="card">
+<h2>План публикаций</h2>
+<p>Понедельник — подготовка сценария.</p>
+<p>Вторник — публикация Shorts.</p>
+<p>Среда — анализ результатов.</p>
+<p>Четверг — новый ролик.</p>
+<p>Пятница — подготовка обложек.</p>
+<p>Суббота — публикация Shorts.</p>
+<p>Воскресенье — анализ недели.</p>
+</div>
+</section>
+
+<section id="settings">
+<div class="card">
+<h2>Настройки приложения</h2>
+<label>Ключ YouTube Data API v3</label>
+<input id="apiKey" type="password" placeholder="Вставь API-ключ">
+<button onclick="saveSettings()">Сохранить ключ на этом устройстве</button>
+<button onclick="clearSettings()">Удалить сохранённый ключ</button>
+<p>Важно: ключ хранится только в браузере. Не публикуй его и не отправляй другим людям. Для полноценного публичного приложения потребуется серверная защита ключа.</p>
+</div>
 </section>
 </main>
 <footer>KBR YouTube PRO © 2026</footer>
+
 <script>
 function showTab(id,btn){
- document.querySelectorAll('section').forEach(s=>s.classList.remove('active'));
- document.querySelectorAll('nav button').forEach(b=>b.classList.remove('active'));
- document.getElementById(id).classList.add('active');
- btn.classList.add('active');
+document.querySelectorAll('section').forEach(s=>s.classList.remove('active'));
+document.querySelectorAll('nav button').forEach(b=>b.classList.remove('active'));
+document.getElementById(id).classList.add('active');
+if(btn)btn.classList.add('active');
 }
+
 function makeIdeas(){
- let t=document.getElementById('topic').value.trim();
- if(!t){alert('Напиши тему канала');return}
- document.getElementById('ideasResult').textContent=
- '1. 3 факта о теме: '+t+
- '\n2. Что скрывает история '+t+'?'+
- '\n3. 5 ошибок, связанных с темой '+t+
- '\n4. Правда или миф: '+t+
- '\n5. Самый неожиданный факт о '+t;
+let t=document.getElementById('topic').value.trim();
+if(!t){alert('Напиши тему канала');return}
+let ideas=[
+'5 неожиданных фактов о '+t,
+'Правда, о которой молчат: '+t,
+'История '+t+' за 60 секунд',
+'3 ошибки, которые совершают в теме '+t,
+'Что будет, если узнать всю правду о '+t,
+'Самый удивительный факт о '+t,
+'Мифы и реальность: '+t,
+'Почему все говорят о '+t+'?',
+'Топ-5 интересных событий: '+t,
+'Один факт о '+t+', который тебя удивит'
+];
+document.getElementById('ideasResult').textContent=ideas.map((x,i)=>(i+1)+'. '+x).join('\n');
 }
+
 function makeSEO(){
- let t=document.getElementById('video').value.trim();
- if(!t){alert('Напиши тему видео');return}
- document.getElementById('seoResult').textContent=
- 'ЗАГОЛОВОК:\n'+t+' — об этом должен знать каждый!\n\n'+
- 'ОПИСАНИЕ:\nВ этом видео мы рассказываем о теме: '+t+'. Смотри до конца и делись своим мнением!\n\n'+
- 'ХЕШТЕГИ:\n#shorts #youtube #'+t.replace(/\s+/g,'');
+let t=document.getElementById('video').value.trim();
+if(!t){alert('Напиши тему видео');return}
+document.getElementById('seoResult').textContent=
+'ЗАГОЛОВОК:\n'+t+' — факты, которые тебя удивят!\n\n'+
+'ОПИСАНИЕ:\nВ этом видео разбираем тему: '+t+'. Смотри до конца, делись мнением и подписывайся на канал!\n\n'+
+'ХЕШТЕГИ:\n#shorts #youtube #'+t.replace(/[^\p{L}\p{N}]/gu,'')+'\n\n'+
+'СОВЕТ:\nДобавь ключевые слова в название и первые строки описания.';
 }
+
+function saveSettings(){
+let k=document.getElementById('apiKey').value.trim();
+if(!k){alert('Введи API-ключ');return}
+localStorage.setItem('kbr_youtube_api_key',k);
+alert('Ключ сохранён на этом устройстве.');
+}
+
+function clearSettings(){
+localStorage.removeItem('kbr_youtube_api_key');
+document.getElementById('apiKey').value='';
+alert('Ключ удалён.');
+}
+
+async function analyzeChannel(){
+let input=document.getElementById('channel').value.trim();
+let out=document.getElementById('analysisResult');
+let key=localStorage.getItem('kbr_youtube_api_key');
+if(!input){alert('Введи ссылку на канал');return}
+if(!key){
+out.textContent='Сначала открой Настройки и добавь YouTube API-ключ.';
+return;
+}
+out.textContent='Загружаю данные канала...';
+try{
+let handle=input.match(/@[\w.-]+/);
+let id=input.match(/UC[\w-]{20,}/);
+let url='https://www.googleapis.com/youtube/v3/channels?part=snippet,statistics&';
+if(id)url+='id='+encodeURIComponent(id[0]);
+else if(handle)url+='forHandle='+encodeURIComponent(handle[0].slice(1));
+else throw new Error('Не удалось определить ID или @имя канала.');
+url+='&key='+encodeURIComponent(key);
+let response=await fetch(url);
+let data=await response.json();
+if(!response.ok)throw new Error(data.error?.message||'Ошибка YouTube API');
+if(!data.items||!data.items.length)throw new Error('Канал не найден. Проверь ссылку.');
+let c=data.items[0];
+let s=c.statistics;
+document.getElementById('views').textContent=Number(s.viewCount||0).toLocaleString('ru-RU');
+document.getElementById('subs').textContent=s.hiddenSubscriberCount?'Скрыто':Number(s.subscriberCount||0).toLocaleString('ru-RU');
+document.getElementById('videos').textContent=Number(s.videoCount||0).toLocaleString('ru-RU');
+out.textContent='КАНАЛ: '+c.snippet.title+'\n\n'+
+'ПРОСМОТРЫ: '+Number(s.viewCount||0).toLocaleString('ru-RU')+'\n'+
+'ПОДПИСЧИКИ: '+(s.hiddenSubscriberCount?'Скрыто':Number(s.subscriberCount||0).toLocaleString('ru-RU'))+'\n'+
+'ВИДЕО: '+Number(s.videoCount||0).toLocaleString('ru-RU')+'\n\n'+
+'Данные получены через YouTube Data API v3.';
+}catch(e){
+out.textContent='Не удалось выполнить анализ:\n'+e.message;
+}
+}
+
+document.getElementById('apiKey').value=localStorage.getItem('kbr_youtube_api_key')||'';
 </script>
 </body>
-  </html>
-  
+</html>
